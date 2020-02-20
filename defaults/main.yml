@@ -1,13 +1,36 @@
 ---
 
-nginx_exporter_version: 0.3.0
+nginx_exporter_version: 0.6.0
 nginx_exporter_nginx_plus: false
 
 nginx_exporter_system_group: nginx-exp
 nginx_exporter_system_user: "{{ nginx_exporter_system_group }}"
 
-nginx_exporter_download_url: >
-  https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v{{ nginx_exporter_version }}/nginx-prometheus-exporter-{{ nginx_exporter_version }}-linux-{{ go_arch }}.tar.gz
+nginx_exporter_download_base_url: https://github.com/nginxinc/nginx-prometheus-exporter/releases/download
+nginx_exporter_download_file: nginx-prometheus-exporter-{{ nginx_exporter_version }}-linux-{{ go_arch }}.tar.gz
+
+nginx_exporter_download_shasum_url: "{{ nginx_exporter_download_base_url }}/v{{ nginx_exporter_version }}/sha256sums.txt"
+nginx_exporter_download_url: "{{ nginx_exporter_download_base_url }}/v{{ nginx_exporter_version }}/{{ nginx_exporter_download_file }}"
 
 nginx_exporter_listen_address: 0.0.0.0:9113
-nginx_exporter_scrape_uri: http://127.0.0.1:8080/stub_status
+nginx_exporter_scrape_uri: http://127.0.0.1:80/nginx_status
+
+nginx_exporter_systemd:
+  - service_name: nginx_exporter.service
+    service_enabled: true
+    service_status: started
+    service_config:
+      Unit:
+        Description: Open Source Dashboard Accelerator for Prometheus
+        Wants: network-online.target
+        After: network-online.target
+      Service:
+        Type: simple
+        User: '{{ nginx_exporter_system_user }}'
+        Group: '{{ nginx_exporter_system_group }}'
+        ExecStart: |
+          /usr/local/bin/nginx_exporter -nginx.scrape-uri {{ nginx_exporter_scrape_uri }} -web.listen-address {{ nginx_exporter_listen_address }} {% if nginx_exporter_nginx_plus %}-nginx.plus{% endif %}
+        SyslogIdentifier: nginx_exporter
+        Restart: always
+      Install:
+        WantedBy: multi-user.target

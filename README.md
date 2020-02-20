@@ -1,7 +1,7 @@
 Ansible Role Nginx Exporter
 =========
 
-[![Build Status](https://travis-ci.com/cloudweeb/ansible-role-nginx_exporter.svg?branch=master)](https://travis-ci.com/cloudweeb/ansible-role-nginx_exporter)
+[![Build Status](https://travis-ci.com/cloudweeb/ansible-role-nginx_exporter.svg?branch=master)](https://travis-ci.com/lablabs/ansible-role-nginx_exporter)
 
 Ansible role to install Nginx Prometheus Exporter
 
@@ -15,15 +15,10 @@ Role Variables
 
 | variable                      | default                           | comment                       |
 |-------------------------------|-----------------------------------|-------------------------------|
-| nginx_exporter_version        | 0.3.0                             | nginx exporter version        |
+| nginx_exporter_version        | 0.6.0                             | nginx exporter version        |
 | nginx_exporter_nginx_plus     | false                             | set true if use nginx plus    |
 | nginx_exporter_listen_address | 0.0.0.0:9113                      | nginx exporter listen address |
-| nginx_exporter_scrape_uri     | <http://127.0.0.1:8080/stub_status> | nginx status url              |
-
-Dependencies
-------------
-
-geerlingguy.nginx
+| nginx_exporter_scrape_uri     | <http://127.0.0.1:80/nginx_status>| nginx status url              |
 
 Example Playbook
 ----------------
@@ -42,7 +37,7 @@ Example Playbook
 
       roles:
         - geerlingguy.nginx
-        - cloudweeb.nginx_exporter
+        - lablabs.nginx_exporter
 
 License
 -------

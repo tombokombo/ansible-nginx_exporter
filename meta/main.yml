@@ -1,9 +1,9 @@
 ---
 galaxy_info:
   role_name: nginx_exporter
-  author: Agnesius Santo Naibaho
+  author: Adam Hamsik
   description: Install Nginx Exporter Prometheus
-  company: Cloudweeb
+  company: Labyrinth Labs
 
   license: MIT
 
@@ -21,6 +21,3 @@ galaxy_info:
     - nginx
     - monitoring
     - prometheus
-
-dependencies:
-  - geerlingguy.nginx
