@@ -15,6 +15,8 @@ nginx_exporter_download_url: "{{ nginx_exporter_download_base_url }}/v{{ nginx_e
 nginx_exporter_listen_address: 0.0.0.0:9113
 nginx_exporter_scrape_uri: http://127.0.0.1:80/nginx_status
 
+nginx_exporter_systemd_additional_wants: openresty.service
+
 nginx_exporter_systemd:
   - service_name: nginx_exporter.service
     service_enabled: true
@@ -22,7 +24,7 @@ nginx_exporter_systemd:
     service_config:
       Unit:
         Description: Open Source Dashboard Accelerator for Prometheus
-        Wants: network-online.target
+        Wants: "network-online.target {{ nginx_exporter_systemd_additional_wants }}"
         After: network-online.target
       Service:
         Type: simple
