@@ -23,7 +23,7 @@ nginx_exporter_systemd:
     service_status: started
     service_config:
       Unit:
-        Description: Open Source Dashboard Accelerator for Prometheus
+        Description: Prometheus Nginx exporter role
         Wants: "network-online.target {{ nginx_exporter_systemd_additional_wants }}"
         After: network-online.target
       Service:
